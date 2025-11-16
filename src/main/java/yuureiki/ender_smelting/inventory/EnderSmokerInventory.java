@@ -12,7 +12,7 @@ public class EnderSmokerInventory extends AbstractEnderFurnaceInventory{
     }
 
     @Override
-    public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+    public ScreenHandler getScreenHandler(int syncId, PlayerInventory playerInventory) {
         return null;
     }
 }

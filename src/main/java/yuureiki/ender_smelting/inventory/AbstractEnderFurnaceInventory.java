@@ -37,10 +37,9 @@ import yuureiki.ender_smelting.interfaces.EnderFurnaceInventoryInterface;
 
 import java.util.List;
 
-public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvider, RecipeUnlocker, Inventory, NamedScreenHandlerFactory, EnderFurnaceInventoryInterface {
+public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvider, RecipeUnlocker, Inventory, EnderFurnaceInventoryInterface {
     private final int size = size();
     private World current_world;
-    private static final Text CONTAINER_NAME = Text.translatable("container." + EnderSmelting.MOD_ID + ".ender_furnace");
 
     @Nullable
     private World activeBlockWorld;
@@ -60,7 +59,7 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
     public static final int PROPERTY_COUNT = 4;
     public static final int DEFAULT_COOK_TIME = 200;
     public static final int field_31295 = 2;
-    private static final int FINAL_GET_SIZE = 3;
+    private static final int FINAL_GET_SIZE = 4;
     protected DefaultedList<ItemStack> inventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
     private int burnTime;
     private int fuelTime;
@@ -366,6 +365,7 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
 
     // Active Block
     public void currentBlockBroken(World world, BlockPos pos){
+        EnderSmelting.LOGGER.info("Checking if current block got broken...");
         if (activeBlockWorld == world && activeBlockPos == pos){
             EnderSmelting.LOGGER.info("Current block got broken.");
             activeBlockWorld = null;
@@ -386,7 +386,7 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
             this.setStack(i, ItemStack.EMPTY);
         }
 
-        for (int i = 0; i < nbtList.size(); i++) {
+        for (int i = 0; i < nbtList.size() - 1; i++) {
             NbtCompound nbtCompound = nbtList.getCompound(i);
             int j = nbtCompound.getByte("Slot") & 255;
             if (j >= 0 && j < this.size()) {
@@ -426,22 +426,6 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
         return nbtList;
     }
 
-    // Screen Handler stuff.
-    @Override
-    public Text getDisplayName() {
-        return CONTAINER_NAME;
-    }
-
-    @Override
-    public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return getScreenHandler(syncId, playerInventory);
-    }
-
-    @Override
-    public ScreenHandler getScreenHandler(int syncId, PlayerInventory playerInventory) {
-        return new FurnaceScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
-    }
-
     // Added for reasons unknown.
     @Override
     public void markDirty() {
@@ -450,6 +434,6 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
 
     @Override
     public int size() {
-        return FINAL_GET_SIZE;
+        return FINAL_GET_SIZE - 1;
     }
 }
