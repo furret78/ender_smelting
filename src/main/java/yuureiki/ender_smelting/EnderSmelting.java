@@ -15,7 +15,6 @@ public class EnderSmelting implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("Hello Fabric world!");
         BlocksRegistry.init();
-        BlockEntityRegistry.init();
         ItemGroupMod.init();
 	}
 

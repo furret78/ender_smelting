@@ -18,6 +18,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.recipe.*;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.screen.FurnaceScreenHandler;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -32,12 +33,14 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import yuureiki.ender_smelting.EnderSmelting;
+import yuureiki.ender_smelting.interfaces.EnderFurnaceInventoryInterface;
 
 import java.util.List;
 
-public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvider, RecipeUnlocker, Inventory, NamedScreenHandlerFactory {
+public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvider, RecipeUnlocker, Inventory, NamedScreenHandlerFactory, EnderFurnaceInventoryInterface {
     private final int size = size();
     private World current_world;
+    private static final Text CONTAINER_NAME = Text.translatable("container." + EnderSmelting.MOD_ID + ".ender_furnace");
 
     @Nullable
     private World activeBlockWorld;
@@ -57,7 +60,7 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
     public static final int PROPERTY_COUNT = 4;
     public static final int DEFAULT_COOK_TIME = 200;
     public static final int field_31295 = 2;
-    private static final int FINAL_GET_SIZE = 4;
+    private static final int FINAL_GET_SIZE = 3;
     protected DefaultedList<ItemStack> inventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
     private int burnTime;
     private int fuelTime;
@@ -290,6 +293,7 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
     }
 
     private int getCookTime() {
+        if (current_world == null) return 200;
         return matchGetter.getFirstMatch(this, current_world).map(AbstractCookingRecipe::getCookTime).orElse(200);
     }
 
@@ -376,34 +380,29 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
 
     // NBT data saving and loading
     public void readNbtList(NbtList nbtList){
+        EnderSmelting.LOGGER.info("Reading Furnace data...");
+
         for (int i = 0; i < this.size(); i++) {
             this.setStack(i, ItemStack.EMPTY);
         }
 
-        NbtCompound smeltCompound = nbtList.getCompound(0);
-        burnTime = smeltCompound.getInt("BurnTime");
-        fuelTime = smeltCompound.getInt("FuelTime");
-        cookTime = smeltCompound.getInt("CookTime");
-        cookTimeTotal = smeltCompound.getInt("CookTimeTotal");
-
-        for (int i = 1; i < nbtList.size() + 1; i++) {
+        for (int i = 0; i < nbtList.size(); i++) {
             NbtCompound nbtCompound = nbtList.getCompound(i);
             int j = nbtCompound.getByte("Slot") & 255;
             if (j >= 0 && j < this.size()) {
                 this.setStack(j, ItemStack.fromNbt(nbtCompound));
             }
         }
+
+        NbtCompound smeltCompound = nbtList.getCompound(nbtList.size());
+        burnTime = smeltCompound.getInt("BurnTime");
+        fuelTime = smeltCompound.getInt("FuelTime");
+        cookTime = smeltCompound.getInt("CookTime");
+        cookTimeTotal = smeltCompound.getInt("CookTimeTotal");
     }
 
     public NbtList toNbtList(){
         NbtList nbtList = new NbtList();
-
-        NbtCompound smeltCompound = new NbtCompound();
-        smeltCompound.putInt("BurnTime", burnTime);
-        smeltCompound.putInt("FuelTime", fuelTime);
-        smeltCompound.putInt("CookTime", cookTime);
-        smeltCompound.putInt("CookTimeTotal", cookTimeTotal);
-        nbtList.add(smeltCompound);
 
         for (int i = 0; i < this.size(); i++) {
             ItemStack itemStack = this.getStack(i);
@@ -415,19 +414,35 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
             }
         }
 
+        NbtCompound smeltCompound = new NbtCompound();
+        smeltCompound.putInt("BurnTime", burnTime);
+        smeltCompound.putInt("FuelTime", fuelTime);
+        smeltCompound.putInt("CookTime", cookTime);
+        smeltCompound.putInt("CookTimeTotal", cookTimeTotal);
+        nbtList.add(smeltCompound);
+
+        EnderSmelting.LOGGER.info("Now saving Furnace data!");
+
         return nbtList;
     }
 
-    // Screen Handler bullshit
-    protected abstract ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory);
-
+    // Screen Handler stuff.
     @Override
     public Text getDisplayName() {
-        return null;
+        return CONTAINER_NAME;
     }
 
-    // Added for reasons.
+    @Override
+    public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+        return getScreenHandler(syncId, playerInventory);
+    }
 
+    @Override
+    public ScreenHandler getScreenHandler(int syncId, PlayerInventory playerInventory) {
+        return new FurnaceScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
+    }
+
+    // Added for reasons unknown.
     @Override
     public void markDirty() {
 

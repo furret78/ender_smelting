@@ -17,11 +17,6 @@ public class EnderBlastFurnaceInventory extends AbstractEnderFurnaceInventory{
         return super.getFuelTime(fuel) / 2;
     }
 
-    @Override
-    protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
-        return null;
-    }
-
 
     @Override
     public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {

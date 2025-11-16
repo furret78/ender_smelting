@@ -12,11 +12,6 @@ public class EnderFurnaceInventory extends AbstractEnderFurnaceInventory {
     }
 
     @Override
-    protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
-        return null;
-    }
-
-    @Override
     public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return null;
     }
