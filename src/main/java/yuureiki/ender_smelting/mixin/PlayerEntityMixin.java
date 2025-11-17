@@ -46,19 +46,16 @@ public class PlayerEntityMixin implements EnderFurnaceInterface {
     // When calling these methods, do ((EnderFurnaceInterface)instance).methodname
     @Override
     public EnderFurnaceInventory enderSmelting$getEnderFurnaceInventory() {
-        EnderSmelting.LOGGER.info("Retrieved the inventory for the Ender Furnace!");
         return this.enderSmelting$enderFurnaceInventory;
     }
 
     @Override
     public EnderBlastFurnaceInventory enderSmelting$getEnderBlastFurnaceInventory() {
-        EnderSmelting.LOGGER.info("Retrieved the inventory for the Ender Blast Furnace!");
         return this.enderSmelting$enderBlastFurnaceInventory;
     }
 
     @Override
     public EnderSmokerInventory enderSmelting$getEnderSmokerInventory() {
-        EnderSmelting.LOGGER.info("Retrieved the inventory for the Ender Smoker!");
         return this.enderSmelting$enderSmokerInventory;
     }
 }

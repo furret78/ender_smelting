@@ -1,6 +1,10 @@
 package yuureiki.ender_smelting.mixin;
 
+import com.mojang.authlib.GameProfile;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,5 +26,12 @@ public class ServerPlayerEntityMixin extends PlayerEntityMixin implements EnderF
         this.enderSmelting$enderFurnaceInventory.tick();
         this.enderSmelting$enderBlastFurnaceInventory.tick();
         this.enderSmelting$enderSmokerInventory.tick();
+    }
+
+    @Inject(method = "<init>", at = @At("RETURN"))
+    private void enderSmelting$constructorEnd(MinecraftServer server, ServerWorld world, GameProfile profile, CallbackInfo ci){
+        this.enderSmelting$enderFurnaceInventory.setCurrentWorld(world);
+        this.enderSmelting$enderBlastFurnaceInventory.setCurrentWorld(world);
+        this.enderSmelting$enderSmokerInventory.setCurrentWorld(world);
     }
 }

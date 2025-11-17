@@ -7,7 +7,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
@@ -18,13 +17,9 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.recipe.*;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.screen.FurnaceScreenHandler;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -32,7 +27,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import yuureiki.ender_smelting.EnderSmelting;
 import yuureiki.ender_smelting.interfaces.EnderFurnaceInventoryInterface;
 
 import java.util.List;
@@ -50,9 +44,6 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
     protected static final int FUEL_SLOT_INDEX = 1;
     protected static final int OUTPUT_SLOT_INDEX = 2;
     public static final int BURN_TIME_PROPERTY_INDEX = 0;
-    private static final int[] TOP_SLOTS = new int[]{0};
-    private static final int[] BOTTOM_SLOTS = new int[]{2, 1};
-    private static final int[] SIDE_SLOTS = new int[]{1};
     public static final int FUEL_TIME_PROPERTY_INDEX = 1;
     public static final int COOK_TIME_PROPERTY_INDEX = 2;
     public static final int COOK_TIME_TOTAL_PROPERTY_INDEX = 3;
@@ -67,6 +58,7 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
     private int cookTimeTotal;
     private final Object2IntOpenHashMap<Identifier> recipesUsed = new Object2IntOpenHashMap<>();
     private final RecipeManager.MatchGetter<Inventory, ? extends AbstractCookingRecipe> matchGetter;
+    private boolean worldLoadCookTimeSet = false;
 
     protected AbstractEnderFurnaceInventory(RecipeType<? extends AbstractCookingRecipe> recipeType) {
         this.matchGetter = RecipeManager.createCachedMatchGetter(recipeType);
@@ -77,10 +69,10 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
         @Override
         public int get(int index) {
             return switch (index) {
-                case 0 -> burnTime;
-                case 1 -> fuelTime;
-                case 2 -> cookTime;
-                case 3 -> cookTimeTotal;
+                case BURN_TIME_PROPERTY_INDEX -> burnTime;
+                case FUEL_TIME_PROPERTY_INDEX -> fuelTime;
+                case COOK_TIME_PROPERTY_INDEX -> cookTime;
+                case COOK_TIME_TOTAL_PROPERTY_INDEX -> cookTimeTotal;
                 default -> 0;
             };
         }
@@ -88,10 +80,10 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
         @Override
         public void set(int index, int value) {
             switch (index){
-                case 0: burnTime = value; break;
-                case 1: fuelTime = value; break;
-                case 2: cookTime = value; break;
-                case 3: cookTimeTotal = value; break;
+                case BURN_TIME_PROPERTY_INDEX: burnTime = value; break;
+                case FUEL_TIME_PROPERTY_INDEX: fuelTime = value; break;
+                case COOK_TIME_PROPERTY_INDEX: cookTime = value; break;
+                case COOK_TIME_TOTAL_PROPERTY_INDEX: cookTimeTotal = value; break;
                 default: break;
             }
         }
@@ -109,18 +101,17 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
     public void tick() {
         if (current_world == null) return;
 
-        boolean bl = isBurning();
-        boolean bl2 = false;
-        if (isBurning()) {
+        boolean isBurningBoolean = isBurning();
+        if (isBurningBoolean) {
             burnTime--;
         }
 
-        ItemStack itemStack = inventory.get(1);
-        boolean bl3 = !inventory.get(0).isEmpty();
-        boolean bl4 = !itemStack.isEmpty();
-        if (isBurning() || bl4 && bl3) {
+        ItemStack fuelItemStack = inventory.get(1);
+        boolean isFirstSlotNotEmpty = !inventory.get(0).isEmpty();
+        boolean isFuelItemStackNotEmpty = !fuelItemStack.isEmpty();
+        if (isBurningBoolean | (isFuelItemStackNotEmpty && isFirstSlotNotEmpty)) {
             Recipe<?> recipe;
-            if (bl3) {
+            if (isFirstSlotNotEmpty) {
                 recipe = matchGetter.getFirstMatch(this, current_world).orElse(null);
             } else {
                 recipe = null;
@@ -128,14 +119,13 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
 
             int i = getMaxCountPerStack();
             if (!isBurning() && canAcceptRecipeOutput(current_world.getRegistryManager(), recipe, inventory, i)) {
-                burnTime = getFuelTime(itemStack);
+                burnTime = getFuelTime(fuelItemStack);
                 fuelTime = burnTime;
                 if (isBurning()) {
-                    bl2 = true;
-                    if (bl4) {
-                        Item item = itemStack.getItem();
-                        itemStack.decrement(1);
-                        if (itemStack.isEmpty()) {
+                    if (isFuelItemStackNotEmpty) {
+                        Item item = fuelItemStack.getItem();
+                        fuelItemStack.decrement(1);
+                        if (fuelItemStack.isEmpty()) {
                             Item item2 = item.getRecipeRemainder();
                             inventory.set(1, item2 == null ? ItemStack.EMPTY : new ItemStack(item2));
                         }
@@ -143,37 +133,27 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
                 }
             }
 
-            if (isBurning() && canAcceptRecipeOutput(current_world.getRegistryManager(), recipe, inventory, i)) {
+            if (isBurningBoolean && canAcceptRecipeOutput(current_world.getRegistryManager(), recipe, inventory, i)) {
                 cookTime++;
                 if (cookTime == cookTimeTotal) {
                     cookTime = 0;
-                    cookTimeTotal = getCookTime();
+                    cookTimeTotal = getCookTime(current_world);
                     if (craftRecipe(current_world.getRegistryManager(), recipe, inventory, i)) {
                         setLastRecipe(recipe);
                     }
-
-                    bl2 = true;
                 }
             } else {
                 cookTime = 0;
             }
-        } else if (!isBurning() && cookTime > 0) {
+        } else if (cookTime > 0) {
             cookTime = MathHelper.clamp(cookTime - 2, 0, cookTimeTotal);
         }
 
-        if (bl != isBurning()) {
-            bl2 = true;
+        if (isBurningBoolean != isBurning()) {
             // This part announces that the block has stopped smelting.
             // TODO: Maybe best to do special client-side rendering.
             // Ender Furnaces can be lit 24/7 like Ender Chests.
             // Just maybe not as much compared to normal Furnaces.
-            //state = state.with(AbstractFurnaceBlock.LIT, isBurning());
-            //world.setBlockState(pos, state, Block.NOTIFY_ALL);
-        }
-
-        if (bl2) {
-            // TODO: Saving the inventory in NBT anyways so no reason to mark dirty, frankly.
-            //markDirty(world, pos, state);
         }
     }
 
@@ -291,9 +271,8 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
         }
     }
 
-    private int getCookTime() {
-        if (current_world == null) return 200;
-        return matchGetter.getFirstMatch(this, current_world).map(AbstractCookingRecipe::getCookTime).orElse(200);
+    private int getCookTime(World world) {
+        return matchGetter.getFirstMatch(this, world).map(AbstractCookingRecipe::getCookTime).orElse(DEFAULT_COOK_TIME);
     }
 
     private boolean isBurning() {
@@ -336,15 +315,13 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
         }
 
         if (slot == 0 && !bl) {
-            cookTimeTotal = getCookTime();
-            cookTime = 0;
-            //markDirty();
+            cookTimeTotal = getCookTime(current_world);
+            if (worldLoadCookTimeSet) cookTime = 0;
         }
     }
 
     @Override
     public boolean canPlayerUse(PlayerEntity player) {
-
         return true;
     }
 
@@ -365,9 +342,7 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
 
     // Active Block
     public void currentBlockBroken(World world, BlockPos pos){
-        EnderSmelting.LOGGER.info("Checking if current block got broken...");
         if (activeBlockWorld == world && activeBlockPos == pos){
-            EnderSmelting.LOGGER.info("Current block got broken.");
             activeBlockWorld = null;
             activeBlockPos = null;
         }
@@ -380,39 +355,30 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
 
     // NBT data saving and loading
     public void readNbtList(NbtList nbtList){
-        EnderSmelting.LOGGER.info("Reading Furnace data...");
-
-        for (int i = 0; i < this.size(); i++) {
-            this.setStack(i, ItemStack.EMPTY);
+        for (int i = 0; i < size(); i++) {
+            setStack(i, ItemStack.EMPTY);
         }
 
-        for (int i = 0; i < nbtList.size() - 1; i++) {
-            NbtCompound nbtCompound = nbtList.getCompound(i);
-            int j = nbtCompound.getByte("Slot") & 255;
-            if (j >= 0 && j < this.size()) {
-                this.setStack(j, ItemStack.fromNbt(nbtCompound));
-            }
-        }
-
-        NbtCompound smeltCompound = nbtList.getCompound(nbtList.size());
+        NbtCompound smeltCompound = nbtList.getCompound(0);
         burnTime = smeltCompound.getInt("BurnTime");
         fuelTime = smeltCompound.getInt("FuelTime");
         cookTime = smeltCompound.getInt("CookTime");
         cookTimeTotal = smeltCompound.getInt("CookTimeTotal");
+
+        for (int i = 1; i < nbtList.size(); i++) {
+            NbtCompound nbtCompound = nbtList.getCompound(i);
+            int j = nbtCompound.getByte("Slot") & 255;
+            if (j < size()) {
+                setStack(j, ItemStack.fromNbt(nbtCompound));
+            }
+            if (i >= nbtList.size() - 1){
+                worldLoadCookTimeSet = true;
+            }
+        }
     }
 
     public NbtList toNbtList(){
         NbtList nbtList = new NbtList();
-
-        for (int i = 0; i < this.size(); i++) {
-            ItemStack itemStack = this.getStack(i);
-            if (!itemStack.isEmpty()) {
-                NbtCompound nbtCompound = new NbtCompound();
-                nbtCompound.putByte("Slot", (byte)i);
-                itemStack.writeNbt(nbtCompound);
-                nbtList.add(nbtCompound);
-            }
-        }
 
         NbtCompound smeltCompound = new NbtCompound();
         smeltCompound.putInt("BurnTime", burnTime);
@@ -421,7 +387,15 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
         smeltCompound.putInt("CookTimeTotal", cookTimeTotal);
         nbtList.add(smeltCompound);
 
-        EnderSmelting.LOGGER.info("Now saving Furnace data!");
+        for (int i = 0; i < size(); i++) {
+            ItemStack itemStack = getStack(i);
+            NbtCompound nbtCompound = new NbtCompound();
+            if (!itemStack.isEmpty() && i < size()) {
+                nbtCompound.putByte("Slot", (byte)i);
+                itemStack.writeNbt(nbtCompound);
+                nbtList.add(nbtCompound);
+            }
+        }
 
         return nbtList;
     }
@@ -435,5 +409,9 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
     @Override
     public int size() {
         return FINAL_GET_SIZE - 1;
+    }
+
+    public void setCurrentWorld(World world){
+        current_world = world;
     }
 }
