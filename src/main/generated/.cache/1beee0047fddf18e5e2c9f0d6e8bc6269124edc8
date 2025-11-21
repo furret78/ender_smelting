@@ -1,0 +1,4 @@
+// 1.20.1	2025-11-21T00:15:25.2746936	Ender Smelting/Block Loot Tables
+2624937d6ff0717e6f4ac4afc5472c407580c1e1 data\ender_smelting\loot_tables\blocks\ender_furnace.json
+4d18eb817e9c4851f0b9b85a169a7a670e86b803 data\ender_smelting\loot_tables\blocks\ender_smoker.json
+39bb71b848d2a9560b3de83e09e067640a4e25e9 data\ender_smelting\loot_tables\blocks\ender_blast_furnace.json

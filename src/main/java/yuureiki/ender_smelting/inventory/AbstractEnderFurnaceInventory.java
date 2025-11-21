@@ -275,7 +275,7 @@ public abstract class AbstractEnderFurnaceInventory implements RecipeInputProvid
         return matchGetter.getFirstMatch(this, world).map(AbstractCookingRecipe::getCookTime).orElse(DEFAULT_COOK_TIME);
     }
 
-    private boolean isBurning() {
+    public boolean isBurning() {
         return burnTime > 0;
     }
 

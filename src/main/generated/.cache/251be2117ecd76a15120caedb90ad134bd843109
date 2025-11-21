@@ -1,6 +1,6 @@
-// 1.20.1	2025-11-17T00:18:37.9183298	Ender Smelting/Model Definitions
-496d9985148b6c46740ed5c45fb97f5e79c97d36 assets\ender_smelting\blockstates\ender_blast_furnace.json
+// 1.20.1	2025-11-21T00:15:25.2759318	Ender Smelting/Model Definitions
 8600f7142364d31eadb1fe285230260edce2b531 assets\ender_smelting\blockstates\ender_smoker.json
+496d9985148b6c46740ed5c45fb97f5e79c97d36 assets\ender_smelting\blockstates\ender_blast_furnace.json
 a3dc71b7be9e0c48d0a756ec498e2fb94659f9e3 assets\ender_smelting\blockstates\ender_furnace.json
 96526d416701206a017c2746c4cfae75dddaf541 assets\ender_smelting\models\item\ender_smoker.json
 88cbbc718fb60230cfaaf0ddd7aa960d947403db assets\ender_smelting\models\item\ender_furnace.json
