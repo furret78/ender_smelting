@@ -26,15 +26,17 @@ public class RecipeProvider extends FabricRecipeProvider {
 
     private static void generateEnderRecipe(Item result, Item special_input, Consumer<RecipeJsonProvider> consumer){
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, result)
-                .pattern("AAA")
-                .pattern("ABA")
-                .pattern("ACA")
-                .input('A', Items.OBSIDIAN)
+                .pattern("DDD")
+                .pattern("DBD")
+                .pattern("DCD")
+                //.input('A', Items.OBSIDIAN)
                 .input('B', Items.ENDER_EYE)
                 .input('C', special_input)
-                .criterion(FabricRecipeProvider.hasItem(Items.OBSIDIAN), FabricRecipeProvider.conditionsFromItem(Items.OBSIDIAN))
+                .input('D', Items.END_STONE)
+                //.criterion(FabricRecipeProvider.hasItem(Items.OBSIDIAN), FabricRecipeProvider.conditionsFromItem(Items.OBSIDIAN))
                 .criterion(FabricRecipeProvider.hasItem(Items.ENDER_EYE), FabricRecipeProvider.conditionsFromItem(Items.ENDER_EYE))
                 .criterion(FabricRecipeProvider.hasItem(special_input), FabricRecipeProvider.conditionsFromItem(special_input))
+                .criterion(FabricRecipeProvider.hasItem(Items.END_STONE), FabricRecipeProvider.conditionsFromItem(Items.END_STONE))
                 .offerTo(consumer);
     }
 }

@@ -20,6 +20,6 @@ public class BlockLootTableProvider extends FabricBlockLootTableProvider {
     }
 
     private void addEnderDrop(Block block){
-        addDrop(block, drops(block, Blocks.OBSIDIAN, ConstantLootNumberProvider.create(7)));
+        addDrop(block, drops(block, Blocks.OBSIDIAN, ConstantLootNumberProvider.create(4)));
     }
 }

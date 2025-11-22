@@ -14,7 +14,6 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -29,9 +28,9 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public abstract class AbstractEnderFurnaceBlockModel implements UnbakedModel, BakedModel, FabricBakedModel {
-    private static final SpriteIdentifier[] SPRITE_IDS = getSpriteIds();
-    private Sprite[] sprites = new Sprite[SPRITE_IDS.length];
+public abstract class AbstractEnderFurnaceBlockModel implements UnbakedModel, BakedModel, FabricBakedModel, BlockModelInterface {
+    private final SpriteIdentifier[] SPRITE_IDS;
+    private final Sprite[] sprites;
 
     protected static final int SPRITE_FRONT = 0;
     protected static final int SPRITE_SIDE = 1;
@@ -40,23 +39,31 @@ public abstract class AbstractEnderFurnaceBlockModel implements UnbakedModel, Ba
 
     protected Mesh mesh;
 
+    protected AbstractEnderFurnaceBlockModel() {
+        this.SPRITE_IDS = getSpriteIds();
+        this.sprites = new Sprite[SPRITE_IDS.length];
+    }
+
     private static SpriteIdentifier getSpriteIdentifier(String path) {
         return new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, EnderSmelting.newIdentifier(path));
     }
 
-    public static String getBlockName() {
+    @Override
+    public String getBlockName() {
         return "ender_furnace";
     }
 
-    public static String getFurnaceFrontTextureName() {
+    @Override
+    public String getFurnaceFrontTextureName() {
         return "front";
     }
 
-    public static String getFurnaceBottomTextureName() {
+    @Override
+    public String getFurnaceBottomTextureName() {
         return "top";
     }
 
-    public static SpriteIdentifier[] getSpriteIds() {
+    public SpriteIdentifier[] getSpriteIds() {
         return new SpriteIdentifier[]{
                 getSpriteIdentifier("block/" + getBlockName() + "_" + getFurnaceFrontTextureName()),
                 getSpriteIdentifier("block/" + getBlockName() + "_side"),
