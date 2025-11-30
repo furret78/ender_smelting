@@ -9,11 +9,9 @@ import java.util.List;
 public class EnglishLanguageProvider extends FabricLanguageProvider {
     private static final List<String> TRANSLATION_TABLE = List.of(
             "block." + EnderSmelting.MOD_ID + ".ender_furnace", "Ender Furnace",
-            "container." + EnderSmelting.MOD_ID + ".ender_furnace", "Ender Furnace"
-            //"block." + EnderSmelting.MOD_ID + ".ender_smoker", "Ender Smoker",
-            //"container." + EnderSmelting.MOD_ID + ".ender_smoker", "Ender Smoker",
-            //"block." + EnderSmelting.MOD_ID + ".ender_blast_furnace", "Ender Blast Furnace",
-            //"container." + EnderSmelting.MOD_ID + ".ender_blast_furnace", "Ender Blast Furnace"
+            "container." + EnderSmelting.MOD_ID + ".ender_furnace", "Ender Furnace",
+            "modmenu.nameTranslation." + EnderSmelting.MOD_ID, "Ender Smelting",
+            "modmenu.summaryTranslation." + EnderSmelting.MOD_ID, "Adds an Ender Furnace."
     );
 
     public EnglishLanguageProvider(FabricDataOutput dataOutput) {

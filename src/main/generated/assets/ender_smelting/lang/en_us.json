@@ -1,4 +1,6 @@
 {
   "block.ender_smelting.ender_furnace": "Ender Furnace",
-  "container.ender_smelting.ender_furnace": "Ender Furnace"
+  "container.ender_smelting.ender_furnace": "Ender Furnace",
+  "modmenu.nameTranslation.ender_smelting": "Ender Smelting",
+  "modmenu.summaryTranslation.ender_smelting": "Adds an Ender Furnace."
 }

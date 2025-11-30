@@ -3,15 +3,15 @@
 	"id": "ender_smelting",
 	"version": "${version}",
 	"name": "Ender Smelting",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "A mod that adds an Ender Furnace. A bit more expensive to craft, but usable anywhere and everywhere, and smelts twice as fast.",
 	"authors": [
-		"Me!"
+		"yuureiki",
+        "Rosa (TheEnigmaScribe)"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/furret78/ender_smelting"
 	},
-	"license": "CC0-1.0",
+	"license": "GNU AGPLv3",
 	"icon": "assets/ender_smelting/icon.png",
 	"environment": "*",
 	"entrypoints": {
@@ -40,5 +40,13 @@
 	},
 	"suggests": {
 		"another-mod": "*"
-	}
+	},
+    "custom": {
+      "modmenu": {
+        "links": {
+          "modmenu.discord": "https://discord.gg/gxurcQ3Chn"
+        },
+        "update_checker": true
+    }
+  }
 }
