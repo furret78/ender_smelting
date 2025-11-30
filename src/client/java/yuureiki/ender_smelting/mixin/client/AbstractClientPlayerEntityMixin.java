@@ -29,19 +29,19 @@ public class AbstractClientPlayerEntityMixin extends PlayerEntityMixin implement
         if (MinecraftClient.getInstance() == null || clientWorld == null) return;
         var client = MinecraftClient.getInstance();
 
-        ClientChunkManager.ClientChunkMap chunkMap = ((ClientChunkManagerAccessor) clientWorld.getChunkManager()).getChunks();
-        AtomicReferenceArray<WorldChunk> chunks = ((ClientChunkManagerAccessor.ClientChunkMapAccessor) (Object) chunkMap).getChunks();
-        ChunkPos[] chunkPositions = new ChunkPos[chunks.length()];
-        for (int i = 0; i < chunks.length(); i++) {
-            WorldChunk chunk = chunks.get(i);
-            if (chunk != null) chunkPositions[i] = chunk.getPos();
-        }
-        for (ChunkPos chunkPos : chunkPositions) {
-            if (chunkPos != null) {
-                for (int y = clientWorld.getBottomSectionCoord(); y < clientWorld.getTopSectionCoord(); y++) {
-                    ((WorldRendererInvoker) client.worldRenderer).invokeScheduleChunkRender(chunkPos.x, y, chunkPos.z, true);
-                }
-            }
-        }
+        //ClientChunkManager.ClientChunkMap chunkMap = ((ClientChunkManagerAccessor) clientWorld.getChunkManager()).getChunks();
+        //AtomicReferenceArray<WorldChunk> chunks = ((ClientChunkManagerAccessor.ClientChunkMapAccessor) (Object) chunkMap).getChunks();
+        //ChunkPos[] chunkPositions = new ChunkPos[chunks.length()];
+        //for (int i = 0; i < chunks.length(); i++) {
+        //    WorldChunk chunk = chunks.get(i);
+        //    if (chunk != null) chunkPositions[i] = chunk.getPos();
+        //}
+        //for (ChunkPos chunkPos : chunkPositions) {
+        //    if (chunkPos != null) {
+        //        for (int y = clientWorld.getBottomSectionCoord(); y < clientWorld.getTopSectionCoord(); y++) {
+        //            ((WorldRendererInvoker) client.worldRenderer).invokeScheduleChunkRender(chunkPos.x, y, chunkPos.z, true);
+        //        }
+        //    }
+        //}
     }
 }

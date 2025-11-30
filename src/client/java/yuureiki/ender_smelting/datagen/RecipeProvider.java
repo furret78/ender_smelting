@@ -20,6 +20,8 @@ public class RecipeProvider extends FabricRecipeProvider {
     @Override
     public void generate(Consumer<RecipeJsonProvider> consumer) {
         generateEnderRecipe(BlocksRegistry.ENDER_FURNACE_ITEM, Items.FURNACE, consumer);
+        //generateEnderRecipe(BlocksRegistry.ENDER_FURNACE_ITEM, Items.SMOKER, consumer);
+        //generateEnderRecipe(BlocksRegistry.ENDER_FURNACE_ITEM, Items.BLAST_FURNACE, consumer);
         //generateEnderRecipe(BlocksRegistry.ENDER_SMOKER_ITEM, Items.SMOKER, consumer);
         //generateEnderRecipe(BlocksRegistry.ENDER_BLAST_FURNACE_ITEM, Items.BLAST_FURNACE, consumer);
     }
@@ -29,10 +31,10 @@ public class RecipeProvider extends FabricRecipeProvider {
                 .pattern("DDD")
                 .pattern("DBD")
                 .pattern("DCD")
-                //.input('A', Items.OBSIDIAN)
+                .input('D', Items.OBSIDIAN)
                 .input('B', Items.ENDER_EYE)
                 .input('C', special_input)
-                .input('D', Items.END_STONE)
+                //.input('D', Items.END_STONE)
                 //.criterion(FabricRecipeProvider.hasItem(Items.OBSIDIAN), FabricRecipeProvider.conditionsFromItem(Items.OBSIDIAN))
                 .criterion(FabricRecipeProvider.hasItem(Items.ENDER_EYE), FabricRecipeProvider.conditionsFromItem(Items.ENDER_EYE))
                 .criterion(FabricRecipeProvider.hasItem(special_input), FabricRecipeProvider.conditionsFromItem(special_input))

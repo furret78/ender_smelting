@@ -9,12 +9,12 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 
 @Mixin(ClientChunkManager.class)
 public interface ClientChunkManagerAccessor {
-    @Accessor
-    ClientChunkManager.ClientChunkMap getChunks();
+    //@Accessor
+    //ClientChunkManager.ClientChunkMap getChunks();
 
-    @Mixin(ClientChunkManager.ClientChunkMap.class)
-    interface ClientChunkMapAccessor {
-        @Accessor
-        AtomicReferenceArray<WorldChunk> getChunks();
-    }
+    //@Mixin(ClientChunkManager.ClientChunkMap.class)
+    //interface ClientChunkMapAccessor {
+    //    @Accessor
+    //    AtomicReferenceArray<WorldChunk> getChunks();
+    //}
 }
