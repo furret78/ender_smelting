@@ -8,4 +8,5 @@ public interface EnderFurnaceInterface {
     EnderFurnaceInventory enderSmelting$getEnderFurnaceInventory();
     EnderBlastFurnaceInventory enderSmelting$getEnderBlastFurnaceInventory();
     EnderSmokerInventory enderSmelting$getEnderSmokerInventory();
+    void enderSmelting$reloadModel();
 }

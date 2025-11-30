@@ -2,20 +2,20 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": {
-      "item": "minecraft:obsidian"
-    },
     "B": {
       "item": "minecraft:ender_eye"
     },
     "C": {
       "item": "minecraft:furnace"
+    },
+    "D": {
+      "item": "minecraft:end_stone"
     }
   },
   "pattern": [
-    "AAA",
-    "ABA",
-    "ACA"
+    "DDD",
+    "DBD",
+    "DCD"
   ],
   "result": {
     "item": "ender_smelting:ender_furnace"

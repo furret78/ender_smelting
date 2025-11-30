@@ -20,8 +20,8 @@ public class RecipeProvider extends FabricRecipeProvider {
     @Override
     public void generate(Consumer<RecipeJsonProvider> consumer) {
         generateEnderRecipe(BlocksRegistry.ENDER_FURNACE_ITEM, Items.FURNACE, consumer);
-        generateEnderRecipe(BlocksRegistry.ENDER_SMOKER_ITEM, Items.SMOKER, consumer);
-        generateEnderRecipe(BlocksRegistry.ENDER_BLAST_FURNACE_ITEM, Items.BLAST_FURNACE, consumer);
+        //generateEnderRecipe(BlocksRegistry.ENDER_SMOKER_ITEM, Items.SMOKER, consumer);
+        //generateEnderRecipe(BlocksRegistry.ENDER_BLAST_FURNACE_ITEM, Items.BLAST_FURNACE, consumer);
     }
 
     private static void generateEnderRecipe(Item result, Item special_input, Consumer<RecipeJsonProvider> consumer){

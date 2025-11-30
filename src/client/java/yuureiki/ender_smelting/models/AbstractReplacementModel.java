@@ -26,10 +26,10 @@ public class AbstractReplacementModel implements UnbakedModel, BakedModel, Fabri
     private final AbstractEnderFurnaceBlockModel off_model;
     private final Supplier<Boolean> conditionGetter;
 
-    public AbstractReplacementModel(AbstractEnderFurnaceBlockModel onModel, AbstractEnderFurnaceBlockModel offModel, Supplier<Boolean> conditionGetter) {
+    public AbstractReplacementModel(AbstractEnderFurnaceBlockModel onModel, AbstractEnderFurnaceBlockModel offModel, Supplier<Boolean> booleanSupplier) {
         on_model = onModel;
         off_model = offModel;
-        this.conditionGetter = conditionGetter;
+        this.conditionGetter = booleanSupplier;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class AbstractReplacementModel implements UnbakedModel, BakedModel, Fabri
 
     @Override
     public ModelOverrideList getOverrides() {
-        return conditionGetter.get() ? on_model.getOverrides() : off_model.getOverrides();
+        return ModelOverrideList.EMPTY;
     }
 
     @Override

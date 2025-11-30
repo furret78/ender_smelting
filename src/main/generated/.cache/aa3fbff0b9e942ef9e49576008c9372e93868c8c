@@ -1,7 +1,3 @@
-// 1.20.1	2025-11-21T00:15:25.2731883	Ender Smelting/Recipes
-f09a73ff9433d102e8a0b93f9fb16aed4067a661 data\ender_smelting\advancements\recipes\misc\ender_furnace.json
-5de41520625af7aadfaff28d8ba54c18f2377720 data\ender_smelting\recipes\ender_smoker.json
-b955b70a9e3a800ab7e27cb969269586fb409d57 data\ender_smelting\recipes\ender_furnace.json
-8b0c138c3284091a3ab8087ae1f8c9fe7c2c064a data\ender_smelting\advancements\recipes\misc\ender_smoker.json
-8e63f257f297295967e07209817ff6ba188d72f6 data\ender_smelting\advancements\recipes\misc\ender_blast_furnace.json
-c7751bc847ccd0e5bc3792c16bae6343a0e07f2b data\ender_smelting\recipes\ender_blast_furnace.json
+// 1.20.1	2025-11-30T18:30:55.3491455	Ender Smelting/Recipes
+e56dce302993361ed1a35dba55835a1ead784fc3 data\ender_smelting\advancements\recipes\misc\ender_furnace.json
+6094c3c208c5cd0d6859f410a2bd931f35881f54 data\ender_smelting\recipes\ender_furnace.json

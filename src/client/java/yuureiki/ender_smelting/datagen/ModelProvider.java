@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.data.client.ItemModelGenerator;
+import net.minecraft.data.client.TexturedModel;
 import yuureiki.ender_smelting.blocks.BlocksRegistry;
 
 public class ModelProvider extends FabricModelProvider {
@@ -13,9 +14,10 @@ public class ModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(BlocksRegistry.ENDER_FURNACE);
-        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(BlocksRegistry.ENDER_BLAST_FURNACE);
-        blockStateModelGenerator.registerNorthDefaultHorizontalRotation(BlocksRegistry.ENDER_SMOKER);
+        //blockStateModelGenerator.registerNorthDefaultHorizontalRotation(BlocksRegistry.ENDER_FURNACE);
+        //blockStateModelGenerator.registerSingleton(BlocksRegistry.ENDER_FURNACE, TexturedModel.ORIENTABLE_WITH_BOTTOM);
+        //blockStateModelGenerator.registerNorthDefaultHorizontalRotation(BlocksRegistry.ENDER_BLAST_FURNACE);
+        //blockStateModelGenerator.registerNorthDefaultHorizontalRotation(BlocksRegistry.ENDER_SMOKER);
     }
 
     @Override

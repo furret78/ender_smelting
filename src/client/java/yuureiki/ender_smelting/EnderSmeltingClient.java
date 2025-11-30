@@ -7,6 +7,6 @@ import yuureiki.ender_smelting.models.plugin.EnderSmeltingModelPlugin;
 public class EnderSmeltingClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-        ModelLoadingPlugin.register(new EnderSmeltingModelPlugin());
+        //ModelLoadingPlugin.register(new EnderSmeltingModelPlugin());
 	}
 }

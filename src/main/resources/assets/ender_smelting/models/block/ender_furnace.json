@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "ender_smelting:block/ender_furnace_bottom",
+    "front": "ender_smelting:block/ender_furnace_front",
+    "side": "ender_smelting:block/ender_furnace_side",
+    "top": "ender_smelting:block/ender_furnace_top"
+  }
+}

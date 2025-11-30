@@ -11,7 +11,7 @@ import yuureiki.ender_smelting.EnderSmelting;
 
 public class EnderSmokerBlockEntity extends AbstractEnderFurnaceBlockEntity{
     public EnderSmokerBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityRegistry.ENDER_SMOKER_BLOCK, pos, state);
+        super(BlockEntityRegistry.ENDER_FURNACE_BLOCK, pos, state);
     }
 
     @Override

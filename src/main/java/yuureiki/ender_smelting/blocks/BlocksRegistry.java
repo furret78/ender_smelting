@@ -15,10 +15,10 @@ public class BlocksRegistry {
 
     public static final Block ENDER_FURNACE = register("ender_furnace", new EnderFurnaceBlock(ENDER_BLOCK_SETTINGS));
     public static final BlockItem ENDER_FURNACE_ITEM = registerItem("ender_furnace", new BlockItem(ENDER_FURNACE, new FabricItemSettings()));
-    public static final Block ENDER_BLAST_FURNACE = register("ender_blast_furnace", new EnderBlastFurnaceBlock(ENDER_BLOCK_SETTINGS));
-    public static final BlockItem ENDER_BLAST_FURNACE_ITEM = registerItem("ender_blast_furnace", new BlockItem(ENDER_BLAST_FURNACE, new FabricItemSettings()));
-    public static final Block ENDER_SMOKER = register("ender_smoker", new EnderSmokerBlock(ENDER_BLOCK_SETTINGS));
-    public static final BlockItem ENDER_SMOKER_ITEM = registerItem("ender_smoker", new BlockItem(ENDER_SMOKER, new FabricItemSettings()));
+    //public static final Block ENDER_BLAST_FURNACE = register("ender_blast_furnace", new EnderBlastFurnaceBlock(ENDER_BLOCK_SETTINGS));
+    //public static final BlockItem ENDER_BLAST_FURNACE_ITEM = registerItem("ender_blast_furnace", new BlockItem(ENDER_BLAST_FURNACE, new FabricItemSettings()));
+    //public static final Block ENDER_SMOKER = register("ender_smoker", new EnderSmokerBlock(ENDER_BLOCK_SETTINGS));
+    //public static final BlockItem ENDER_SMOKER_ITEM = registerItem("ender_smoker", new BlockItem(ENDER_SMOKER, new FabricItemSettings()));
 
     private static <T extends Block> T register(String path, T block){
         return Registry.register(Registries.BLOCK, EnderSmelting.newIdentifier(path), block);

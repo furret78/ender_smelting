@@ -15,8 +15,8 @@ public class BlockLootTableProvider extends FabricBlockLootTableProvider {
     @Override
     public void generate() {
         addEnderDrop(BlocksRegistry.ENDER_FURNACE);
-        addEnderDrop(BlocksRegistry.ENDER_SMOKER);
-        addEnderDrop(BlocksRegistry.ENDER_BLAST_FURNACE);
+        //addEnderDrop(BlocksRegistry.ENDER_SMOKER);
+        //addEnderDrop(BlocksRegistry.ENDER_BLAST_FURNACE);
     }
 
     private void addEnderDrop(Block block){

@@ -24,9 +24,9 @@ public class BlockTagGenerator extends FabricTagProvider {
 
     private void addToBlockTag(TagKey<Block> blockTag){
         getOrCreateTagBuilder(blockTag)
-                .add(BlocksRegistry.ENDER_SMOKER)
+                //.add(BlocksRegistry.ENDER_SMOKER)
                 .add(BlocksRegistry.ENDER_FURNACE)
-                .add(BlocksRegistry.ENDER_BLAST_FURNACE)
+                //.add(BlocksRegistry.ENDER_BLAST_FURNACE)
                 .setReplace(false);
     }
 }

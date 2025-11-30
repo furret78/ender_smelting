@@ -7,9 +7,11 @@ import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
+import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.model.*;
+import net.minecraft.client.render.model.json.ModelOverrideList;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.SpriteIdentifier;
@@ -125,12 +127,17 @@ public abstract class AbstractEnderFurnaceBlockModel implements UnbakedModel, Ba
 
     @Override
     public ModelTransformation getTransformation() {
-        return null;
+        return ModelHelper.MODEL_TRANSFORM_BLOCK;
     }
 
     @Override
     public boolean isVanillaAdapter() {
         return false;
+    }
+
+    @Override
+    public ModelOverrideList getOverrides() {
+        return ModelOverrideList.EMPTY;
     }
 
     @Override
@@ -140,6 +147,21 @@ public abstract class AbstractEnderFurnaceBlockModel implements UnbakedModel, Ba
 
     @Override
     public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
+        mesh.outputTo(context.getEmitter());
+    }
 
+    @Override
+    public boolean hasDepth() {
+        return false;
+    }
+
+    @Override
+    public boolean isSideLit() {
+        return true;
+    }
+
+    @Override
+    public boolean isBuiltin() {
+        return false;
     }
 }

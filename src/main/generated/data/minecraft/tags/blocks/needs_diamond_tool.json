@@ -1,8 +1,6 @@
 {
   "replace": false,
   "values": [
-    "ender_smelting:ender_smoker",
-    "ender_smelting:ender_furnace",
-    "ender_smelting:ender_blast_furnace"
+    "ender_smelting:ender_furnace"
   ]
 }
