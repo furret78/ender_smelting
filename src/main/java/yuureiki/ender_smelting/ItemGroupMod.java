@@ -12,8 +12,6 @@ public class ItemGroupMod {
 
     private static void modifyItemGroups(){
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(content -> {
-            //content.addAfter(Items.BLAST_FURNACE, BlocksRegistry.ENDER_BLAST_FURNACE_ITEM);
-            //content.addAfter(Items.BLAST_FURNACE, BlocksRegistry.ENDER_SMOKER_ITEM);
             content.addAfter(Items.BLAST_FURNACE, BlocksRegistry.ENDER_FURNACE_ITEM);
         });
     }

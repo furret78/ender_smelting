@@ -34,8 +34,6 @@ loom {
 			sourceSet sourceSets.client
 		}
 	}
-
-    //accessWidenerPath = file('src/main/resources/endersmelting.accesswidener')
 }
 
 fabricApi {

@@ -18,17 +18,5 @@ public class BlockEntityRegistry {
             ).build()
     );
 
-    //public static final BlockEntityType<EnderBlastFurnaceBlockEntity> ENDER_BLAST_FURNACE_BLOCK = register(
-    //        "ender_blast_furnace_block", FabricBlockEntityTypeBuilder.create(
-    //                EnderBlastFurnaceBlockEntity::new, BlocksRegistry.ENDER_BLAST_FURNACE
-    //        ).build()
-    //);
-
-    //public static final BlockEntityType<EnderSmokerBlockEntity> ENDER_SMOKER_BLOCK = register(
-    //        "ender_smoker_block", FabricBlockEntityTypeBuilder.create(
-    //                EnderSmokerBlockEntity::new, BlocksRegistry.ENDER_SMOKER
-    //        ).build()
-    //);
-
     public static void init(){}
 }
